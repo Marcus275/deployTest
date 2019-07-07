@@ -1,15 +1,16 @@
-import React  from 'react';
-// import { Stage, Layer, Star, Text } from 'react-konva';
+import React from 'react';
+import Konva_Wrapper from './konva_wrapper'
 
 
 export default class Main extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             area_length: '',
             processing: false,
             area_height: '',
-            rectangles: [{length: 0, height: 0}]
+            rectangles: [{length: 0, height: 0}],
+            points: []
         };
     }
 
@@ -74,27 +75,33 @@ export default class Main extends React.Component {
     };
 
     render() {
-        console.log(this.state)
+        console.log(this.state);
+
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Area to fill length:
-                    <input type="text" name="area_length" onChange={this.handleChangeAbstract}/>
-                    Area to fill height:
-                    <input type="text" name="area_height" onChange={this.handleChangeAbstract}/>
-                </label>
-                {this.renderRectangleInput()}
-                <button
-                    type="button"
-                    onClick={this.handleAddRectangle}
-                    className="small"
-                >
-                    Add Rectangle
-                </button>
-                <button>Incorporate</button>
-            </form>
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Area to fill length:
+                        <input type="text" name="area_length" onChange={this.handleChangeAbstract}/>
+                        Area to fill height:
+                        <input type="text" name="area_height" onChange={this.handleChangeAbstract}/>
+                    </label>
+                    {this.renderRectangleInput()}
+                    <button
+                        type="button"
+                        onClick={this.handleAddRectangle}
+                        className="small"
+                    >
+                        Add Rectangle
+                    </button>
+                    <button>Incorporate</button>
+                </form>
+                <Konva_Wrapper points={this.state.points}/>
+            </div>
         );
+
     }
+
 
     handleSubmit = async e => {
         e.preventDefault();
@@ -114,7 +121,9 @@ export default class Main extends React.Component {
             body: body,
         }).then((response) => {
             response.text().then((text) => {
-                console.log(text)
+                console.log(text);
+                let data = JSON.parse(text);
+                this.setState({points: data})
                 // let data = JSON.parse(text);
                 // console.log(data);
 

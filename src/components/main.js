@@ -1,5 +1,6 @@
 import React from 'react';
 import Konva_Wrapper from './konva_wrapper'
+import Info from './info.js'
 
 
 export default class Main extends React.Component {
@@ -10,7 +11,13 @@ export default class Main extends React.Component {
             processing: false,
             area_height: '',
             rectangles: [{length: 0, height: 0}],
-            points: []
+            points: [],
+            values : {
+                x : 0,
+                y: 0,
+                width: 0,
+                height: 0
+            }
         };
     }
 
@@ -20,6 +27,8 @@ export default class Main extends React.Component {
             if (idx !== sidx) return rectangle;
             let returnObject = {...rectangle};
             returnObject[evt.target.name] = evt.target.value;
+            console.log(rectangle)
+            console.log(returnObject)
             return returnObject
         });
 
@@ -40,23 +49,30 @@ export default class Main extends React.Component {
     };
 
 
+    handleClick(values){
+        console.log('Eureka!')
+        console.log(values)
+        this.setState({values: values})
+    }
+
+
     renderRectangleInput() {
         return <div>
             <h4>Rectangles</h4>
-            <p>Length and then height:</p>
+            <p>Length, height, id:</p>
             {this.state.rectangles.map((rectangle, idx) => (
                 <div className="rectangle">
                     <input
                         type="number"
                         value={rectangle.length}
                         name={"length"}
-                        onChange={this.handleRectangleNameChange(idx, "length")}
+                        onChange={this.handleRectangleNameChange(idx)}
                     />
                     <input
                         type="number"
                         value={rectangle.height}
                         name={"height"}
-                        onChange={this.handleRectangleNameChange(idx, 'height')}
+                        onChange={this.handleRectangleNameChange(idx)}
                     />
                     <button
                         type="button"
@@ -79,6 +95,7 @@ export default class Main extends React.Component {
 
         return (
             <div>
+                <Info values={this.state.values} />
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         Area to fill length:
@@ -96,7 +113,7 @@ export default class Main extends React.Component {
                     </button>
                     <button>Incorporate</button>
                 </form>
-                <Konva_Wrapper points={this.state.points}/>
+                <Konva_Wrapper points={this.state.points} area_length={this.state.area_length} area_height={this.state.area_height} handleClick={this.handleClick.bind(this)}/>
             </div>
         );
 

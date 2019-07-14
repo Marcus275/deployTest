@@ -13,15 +13,10 @@ export default class Konva_Wrapper extends React.Component {
 
 
     render(){
-        console.log('Input at Konva_wrapper');
-        console.log(this.props.points);
         let rectangles = [];
         // Maybe put this in BE and pass rect objects along? If possible instead of sending points.
         for(let rectangle of this.props.points){
             let color = Konva.Util.getRandomColor();
-
-            console.log(rectangle)
-            console.log(typeof(rectangle.x2))
             rectangles.push(
                 <Rectangle
                     x={rectangle.x1}
@@ -29,12 +24,23 @@ export default class Konva_Wrapper extends React.Component {
                     width={rectangle.x2 - rectangle.x1}
                     height={rectangle.y2 - rectangle.y1}
                     color={color}
+                    draggable={true}
+                    handleClick={this.props.handleClick}
                 />
             )
         }
         return (
             <Stage width={window.innerWidth} height={window.innerHeight}>
                 <Layer>
+                    <Rectangle
+                        x={0}
+                        y={0}
+                        width={this.props.area_length}
+                        height={this.props.area_height}
+                        draggable={false}
+                        color={Konva.Util.getRandomColor()}
+                        handleClick={()=>{}}
+                    />
                     {rectangles}
                 </Layer>
             </Stage>

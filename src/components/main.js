@@ -132,7 +132,7 @@ export default class Main extends React.Component {
                         API level:
                         <select value={this.state.algoSelectorValue} onChange={this.handleChangeAbstract}
                                 name={'algoSelectorValue'}>
-                            {/*<option value="shelf_nf">Shelf Next fit</option>*/}
+                            <option value="Shelf_nf">Shelf Next fit</option>
                             <option value="Guillotine">Guillotine</option>
                             <option value="GuillotineBAF">Guillotine Best Area</option>
                         </select>

@@ -2,15 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
+const path = require('path')
 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Express only serves static assets in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("/build"));
-}
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, '/build')))// Anything that doesn't match the above, send back index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/build/index.html'))
+})
 
 app.use((req, res, next) => {
   res.header(
